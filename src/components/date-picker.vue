@@ -52,6 +52,10 @@ import { getHolidays, getFestival, getWorks, getRecentDay, compare } from './hol
 export default {
   name: 'calender',
   props: {
+    // 点击接收事件
+    selecteFuc: {
+      type: Function,
+    },
     // 日期范围开始
     startDate: {
       type: String,
@@ -200,7 +204,8 @@ export default {
       this.selected = new Date(date.replace(/-/g, '/'));
       let emitData = this[t[this.mode]](date);
       if (!emitData) return;
-      this.$emit('selecteFuc', {
+      
+      this.selecteFuc && this.selecteFuc({
           date,
           BE: emitData
       });
@@ -236,7 +241,6 @@ export default {
     },
   },
   created () {
-    console.log(this);
     this.dateData = this.buildData();
   },
   mounted() {

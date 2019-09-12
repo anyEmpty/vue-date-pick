@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <datePicker :mode="mode" :BE='BE' @selecteFuc="selecteFuc"></datePicker>
+    <datePicker :mode="mode" :BE='BE' :selecteFuc="selecteFuc"></datePicker>
   </div>
 </template>
 
