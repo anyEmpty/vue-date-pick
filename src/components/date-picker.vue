@@ -28,7 +28,7 @@
               startend: checkStart === day.date || checkEnd === day.date,
               work: day.fillWork, //补班
               relax: day.relax, // 休假期
-              range: mode === 'range' && twoClick == 0 && new Date(day.date) > new Date(checkStart) && new Date(checkEnd) > new Date(day.date),
+              range: mode === 'range' && twoClick == 0 && compare(day.date) > compare(checkStart) && compare(checkEnd) > compare(day.date),
               rangechecked: mode === 'range' && twoClick == 0 && (checkStart === day.date || checkEnd === day.date),
               left: mode === 'range' && checkStart === day.date,
               right: mode === 'range' && checkEnd === day.date,
