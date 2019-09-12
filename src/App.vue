@@ -1,28 +1,32 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <datePicker :mode="mode" :BE='BE' @selecteFuc="selecteFuc"></datePicker>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import datePicker from './components/date-picker'
 
 export default {
   name: 'app',
+  data () {
+    return {
+      BE: ['2019-9-12', '2019-9-15'],
+      mode: 'range',
+      a: '2018-8-10',
+      b: '2020-8-10'
+    }
+  },
+  methods: {
+    selecteFuc(data) {
+      console.log(data);
+    }
+  },
   components: {
-    HelloWorld
+    datePicker
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
