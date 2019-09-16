@@ -97,11 +97,11 @@ export default {
     return {
       calendarData: null,
       weekArr: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-      selected: t || new Date().format('yyyy/MM/dd'),
-      checkStart: checkStart,
-      checkEnd: checkEnd && checkEnd,
-      twoClick: 0,
-      compare
+      selected: t || new Date().format('yyyy/MM/dd'), // 选中
+      checkStart: checkStart, // 开始
+      checkEnd: checkEnd && checkEnd, // 结束
+      twoClick: 0, // range点击标志
+      compare // 比较转化
     }
   },
   computed: {
@@ -246,6 +246,7 @@ export default {
       alert(`选择开始时间为${this.checkStart || '--'}，结束时间为${this.checkEnd || '--'}`);
       return [this.checkStart, this.checkEnd];
     },
+    // 刷新初始化
     refresh() {
       let checkStart, checkEnd, t;
       if (this.BE.length) {
@@ -271,6 +272,7 @@ export default {
     this.dateData = this.buildData();
   },
   mounted() {
+    // 定位
     setTimeout(() => {
       let time = new Date(this.selected);
       let el = document.getElementById(`${time.getFullYear()}${time.getMonth() + 1}`);

@@ -40,9 +40,9 @@ export default {
 <style lang="less" scoped>
 .test{
   padding: 0 20px;
-  background-color: rgba(72, 109, 23, 0.6);
+  background-color: #d58ada99;
   box-sizing: border-box;
-  color: #fff;
+  color: #4447c1;
   position: fixed;
   width: 100%;
   bottom: 20px;
