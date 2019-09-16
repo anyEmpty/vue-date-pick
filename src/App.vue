@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <datePicker :mode="mode" :BE='BE' :selecteFuc="selecteFuc"></datePicker>
+    <datePicker :mode="mode" :BE='BE' :selecteFuc="selecteFuc" ref="datePicker"></datePicker>
+    <div class="test">
+      <span @click="change('start')">选择去程</span>
+      <span @click="change('end')">选择返程</span>
+      <span @click="change('range')">往返选择</span>
+    </div>
   </div>
 </template>
 
@@ -13,13 +18,17 @@ export default {
     return {
       BE: ['2019-9-12', '2019-9-15'],
       mode: 'range',
-      a: '2018-8-10',
-      b: '2020-8-10'
     }
   },
   methods: {
     selecteFuc(data) {
       console.log(data);
+    },
+    change(mode) {
+      this.mode = mode;
+      this.$nextTick(() => {
+        this.$refs.datePicker.refresh();
+      })
     }
   },
   components: {
@@ -28,5 +37,21 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+.test{
+  padding: 0 20px;
+  background-color: rgba(72, 109, 23, 0.6);
+  box-sizing: border-box;
+  color: #fff;
+  position: fixed;
+  width: 100%;
+  bottom: 20px;
+  left: 0;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100000;
+}
+
 </style>

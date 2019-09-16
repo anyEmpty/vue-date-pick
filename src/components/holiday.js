@@ -148,7 +148,7 @@ function getRecentDay(date) {
  * @param {*} date 
  */
 function compare(date) {
-	return new Date(typeof date === 'string' ? date.replace(/-/g, '/') : date);
+	return new Date(date);
 }
 export {
 	getHolidays,

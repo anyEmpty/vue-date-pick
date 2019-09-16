@@ -59,12 +59,12 @@ export default {
     // 日期范围开始
     startDate: {
       type: String,
-      default: new Date().clearTime().format('yyyy-MM-dd')
+      default: new Date().clearTime().format('yyyy/MM/dd')
     },
     // 日期范围结束
     endDate: {
       type: String,
-      default: new Date().addMonths(12).format('yyyy-MM-dd')
+      default: new Date().addMonths(12).format('yyyy/MM/dd')
     },
     // 开始结束时间数组 ['2019-8-10', '2019-9-9']
     BE: {
@@ -82,8 +82,8 @@ export default {
   data () {
     let checkStart, checkEnd, t;
     if (this.BE.length) {
-      checkStart = new Date(this.BE[0].replace(/-/g, '/')).clearTime();
-      checkEnd = this.BE[1] && new Date(this.BE[1].replace(/-/g, '/')).clearTime();
+      checkStart = this.transfer(this.BE[0]);
+      checkEnd = this.BE[1] && this.transfer(this.BE[1]);
     }
     switch (this.mode) {
       case 'start':
@@ -97,19 +97,23 @@ export default {
     return {
       calendarData: null,
       weekArr: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-      selected: t || new Date().format('yyyy-MM-dd'),
-      checkStart: checkStart.format('yyyy-MM-dd'),
-      checkEnd: checkEnd && checkEnd.format('yyyy-MM-dd'),
+      selected: t || new Date().format('yyyy/MM/dd'),
+      checkStart: checkStart,
+      checkEnd: checkEnd && checkEnd,
       twoClick: 0,
       compare
     }
   },
   computed: {
     selectedTime() {
-      return new Date(this.selected).format('yyyy-MM-dd');
+      return new Date(this.selected).format('yyyy/MM/dd');
     },
   },
   methods: {
+    // 初始化日期转化 -/ 补0
+    transfer(date) {
+      return new Date(date.replace(/-/g, '/')).format('yyyy/MM/dd')
+    },
     // 创建日期月份数据
     buildMonthDate(time) {
       let monthDate = [];
@@ -127,14 +131,14 @@ export default {
         dateInfo = {
           text: date.getDate(),
           dateTime: date.getTime(),
-          date: date.format('yyyy-MM-dd'),
+          date: date.format('yyyy/MM/dd'),
           tips: ''
         }
         // 开始日期之前和结束日期之后的日期置灰
         if (date < this.startDate || date > this.endDate) {
           dateInfo.disable = true;
         }
-        if (this.mode === 'end' && new Date(new Date(date).format('yyyy-MM-dd')) < new Date(this.checkStart)) {
+        if (this.mode === 'end' && new Date(date) < new Date(this.checkStart)) {
           // 返程时间必须大于去程时间
           dateInfo.disable = true;
         }
@@ -181,8 +185,8 @@ export default {
     },
     // 创建日期数据
     buildData() {
-      let startDate = new Date(this.startDate.replace(/-/g, '/'));
-      let endDate = new Date(this.endDate.replace(/-/g, '/'));
+      let startDate = compare(this.startDate);
+      let endDate = compare(this.endDate);
       let dateData = [];
       while (startDate <= endDate) {
         let month = this.buildMonthDate(startDate.firstDayOfMonth());
@@ -201,7 +205,7 @@ export default {
         'range': 'clickHandlerRange'
       }
       
-      this.selected = new Date(date.replace(/-/g, '/'));
+      this.selected = new Date(date);
       let emitData = this[t[this.mode]](date);
       if (!emitData) return;
       
@@ -215,10 +219,12 @@ export default {
       if (compare(date) >= compare(this.checkEnd)) {
         this.checkEnd = '';
       }
+      alert(`选择开始时间为${date}，结束时间为${this.checkEnd || '--'}`);
       return [date, this.checkEnd];
     },
     clickHandlerEnd(date) {
       this.checkEnd = date;
+      alert(`选择开始时间为${this.checkStart || '--'}，结束时间为${date || '--'}`);
       return [this.checkStart, date];
     },
     clickHandlerRange(date) {
@@ -237,8 +243,29 @@ export default {
       ++this.twoClick;
       if (this.twoClick === 1) return false;
       this.twoClick = 0;
+      alert(`选择开始时间为${this.checkStart || '--'}，结束时间为${this.checkEnd || '--'}`);
       return [this.checkStart, this.checkEnd];
     },
+    refresh() {
+      let checkStart, checkEnd, t;
+      if (this.BE.length) {
+        checkStart = this.transfer(this.BE[0]);
+        checkEnd = this.BE[1] && this.transfer(this.BE[1]);
+      }
+      switch (this.mode) {
+        case 'start':
+        case 'range':
+          t = checkStart;
+          break;
+        case 'end':
+          t = checkEnd;
+          break;
+      }
+      this.checkStart = checkStart;
+      this.checkEnd = checkEnd;
+      this.selected = t;
+      this.dateData = this.buildData();
+    }
   },
   created () {
     this.dateData = this.buildData();
