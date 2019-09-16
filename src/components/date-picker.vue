@@ -245,15 +245,7 @@ export default {
         checkStart = this.transfer(this.BE[0]);
         checkEnd = this.BE[1] && this.transfer(this.BE[1]);
       }
-      switch (this.mode) {
-        case 'start':
-        case 'range':
-          t = checkStart;
-          break;
-        case 'end':
-          t = checkEnd;
-          break;
-      }
+      t = this.mode === 'end' ? checkEnd : checkStart;
       this.checkStart = checkStart;
       this.checkEnd = checkEnd;
       this.selected = t;
