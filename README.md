@@ -1,5 +1,7 @@
 # vue-date-picker
 
+[示例地址](https://anyempty.github.io/vue-date-pick/index.html)
+
 ## 支持三种方式
 
 ### 选择开始时间 mode = start
